@@ -70,3 +70,10 @@ class UpdateUsernameForm(FlaskForm):
             user = User.objects(username=username.data).first()
             if user is not None:
                 raise ValidationError("That username is already taken")
+
+class UpdateProfilePicForm(FlaskForm):
+    propic = FileField('Profile Picture', validators=[
+        FileRequired(), 
+        FileAllowed(['jpg', 'png'], 'Images Only!')
+    ])
+    submit = SubmitField('Update')

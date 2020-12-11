@@ -4,12 +4,11 @@
 {% if error_msg %}
 <b>{{ error_msg }}</b>
 {% endif %}
-
 {% if dog %}
 
 {# Display card for the dog details #}
 <div class="row">
-  <div class="col">
+  <div class="col-8">
     <div class="card text-center">
       <div class="card-header">
         {{ dog.breed }} {{ dog.subbreed }}
@@ -32,14 +31,14 @@
       </div>
     </div>
   </div>
-</div>
 {# Comments #}
-<div class="row">
-  <div class="col-md-12">
+  <div class="col">
+    <p></p>
     <h3> Comments <small class="float-right">{{ reviews|length }} reviews</small></h3>
     <ul class="media-list">
       {% for review in reviews %}
       <li class="media review-item">
+       <img class="mr-3 comment-pic" src="data:image/png;base64,{{review.image}}" alt="">
         <div class="media-body">
           <span class="float-right">
             <small>{{ review.date }}</small>
@@ -54,13 +53,8 @@
       </li>
       {% endfor %}
     </ul>
-  </div>
-</div>
-
 {% if current_user.is_authenticated %}
 {# Dog Comment submission form #}
-<div class="row">
-  <div class="col">
     <form method="POST" action="">
       {{ form.csrf_token }}
       <div class="form-group">
@@ -78,7 +72,7 @@
       </div>
       {{ form.submit() }}
     </form>
-  </div>
+
 </div>
 {% endif %}
 {% endif %}
