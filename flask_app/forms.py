@@ -19,7 +19,7 @@ from .models import User
 
 class SearchForm(FlaskForm):
     search_query = StringField(
-        "Query", validators=[InputRequired(), Length(min=1, max=100)]
+        "Query", validators=[InputRequired(),Length(min=1, max=100)]
     )
     submit = SubmitField("Search")
 
@@ -77,3 +77,13 @@ class UpdateProfilePicForm(FlaskForm):
         FileAllowed(['jpg', 'png'], 'Images Only!')
     ])
     submit = SubmitField('Update')
+
+    
+class MainPageForm(FlaskForm):
+    text = TextAreaField(
+        "Text", validators=[InputRequired(), Length(min=1, max=140)]
+    )
+    propic = FileField('Attach a photo / image here', validators=[ 
+        FileAllowed(['jpg', 'png'], 'Images Only!')
+    ])
+    submit = SubmitField("Post to the Main Page")

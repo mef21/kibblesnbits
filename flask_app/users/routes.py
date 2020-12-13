@@ -6,6 +6,8 @@ from ..forms import RegistrationForm, LoginForm, UpdateUsernameForm,UpdateProfil
 from ..models import User
 import io
 import base64
+from werkzeug.utils import secure_filename
+
 users = Blueprint("users", __name__)
 
 def images(username):
@@ -78,7 +80,7 @@ def account():
             current_user.profile_pic.replace(img.stream, content_type='images/png')
         current_user.save()
 
-        return redirect(url_for('account'))
+        return redirect(url_for('users.account'))
     image = images(current_user.username)
 
     return render_template(

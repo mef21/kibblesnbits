@@ -1,12 +1,66 @@
 {% extends "header.html" %}
 {% block content %}
+
+{% if error_msg %}
+<b>{{ error_msg }}</b>
+{% endif %}
+
 <p></p>
 <div class="row">
-  <div class="col-8">
-        
+  <div class="col-8 card">
+    <p></p>
+    <div class="mr-3 card-body card">
+      {% if current_user.is_authenticated %}
+      {# Main Page submission form #}
+      <form method="POST" action="" enctype="multipart/form-data">
+	{{ post_form.csrf_token }}
+	<div class="form-group">
+          {{ post_form.text.label }}
+          {{ post_form.text(class="form-control") }}
+	  {{ post_form.propic.label(class="form-control-label") }}
+          {{ post_form.propic(class="form-control form-control-lg") }}
+          {% if post_form.text.errors %}
+          <div class="alert alert-warning" role="alert">
+            {% for error in post_form.text.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+	</div>
+	<div class="form-group">
+	  {{ post_form.submit }}
+	</div>
+      </form>
+      {% endif %}
     </div>
+    <div>
+      <p></p>
+       <ul class="media-list list-group-flush">
+	 {% for post in posts %}
+	 <li class="media list-group-item">
+	   <img class="mr-3 comment-pic" src="data:image/png;base64,{{post.profpic}}" alt="">
+	   <div class="media-body">
+             <span class="float-right">
+               <small>{{ post.date }}</small>
+             </span>
+               <a href="{{ url_for('dogs.user_detail', username=post.username) }}">
+		 <strong>@{{ post.username }}</strong>
+               </a>
+             <p>
+	       
+               {{ post.content }}
+             </p>
+	     {% if post.image %}
+	     <img class="mr-3" style="height:110px;margin:1%;" src="data:image/png;base64,{{post.image}}" alt="Unable to properly load image.">
+	     {% endif %}
+           </div>
+	 </li>
+	 {% endfor %}
+       </ul>
+    </div>
+  </div>
     <div class="col">
-        <form action="/" class="form-inline my-2 my-lg-0" method="POST">
+        <form action="/" class="form-inline my-2 my-lg-0" method="POST" enctype="multipart/form-data">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
@@ -17,18 +71,18 @@
                 {% endif %}
             {% endwith %}
 
-            {{ form.csrf_token }}
-            {{ form.search_query(class="form-control", placeholder="Search") }}
+            {{ form1.csrf_token }}
+            {{ form1.search_query(class="form-control", placeholder="Search") }}
 
-            {% if form.search_query.errors %}
+            {% if form1.search_query.errors %}
             <div class="alert alert-warning" role="alert">
-                {% for error in form.search_query.errors %}
+                {% for error in form1.search_query.errors %}
                 <span>{{ error }}</span>
                 {% endfor %}
             </div>
             {% endif %}
 
-            {{ form.submit(class="btn btn-outline-success") }}
+           {{ form1.submit(class="btn btn-outline-success") }} 
         </form>
     </div>
 </div>
