@@ -31,4 +31,32 @@
         </ul>
     </div>
 </div>
+<p></p>
+<p></p>
+<p></p>
+
+<div class="row">
+    <div class="col">
+        <h1> Posts <small class="float-right">{{ num_post }} Posts</small></h1>
+        <ul class="list-group">
+          {% for post in posts %}
+          <li class="list-group-item">
+            <div class="container">
+              <span class="float-right">
+                <small>{{ post.date }}</small>
+              </span>
+              <p>
+                {{ post.content }}
+              </p>
+	      {% if post.image %}
+	      <div class="card text-center">
+		<img class="w-50 text-center" src="data:image/png;base64,{{post.image}}" alt="Unable to properly load image.">
+	      </div>
+	      {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}

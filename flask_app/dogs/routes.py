@@ -104,8 +104,18 @@ def dog_detail(dog_id):
 def user_detail(username):
     user = User.objects(username=username).first()
     reviews = Review.objects(commenter=user)
-
-    return render_template("user_detail.html", username=username, reviews=reviews)
+    main_posts = Post.objects(poster=user)
+    posts = []
+    for r in main_posts:
+        posts.append({
+            'date': r.date,
+            'username': r.poster.username,
+            'content': r.text1,
+            'profpic':images(r.poster.username),
+            'image': images2(r.pic)
+        })
+        
+    return render_template("user_detail.html", username=username, reviews=reviews, posts=posts, num_post=(len(posts)))
 
 #@talisman(frame_options=ALLOW_FROM, frame_options_allow_from='*',content_security_policy={**csp, 'frame-ancestors': ['*']})
 @dogs.route("/dogs/dog_quiz", methods=["GET", "POST"])
