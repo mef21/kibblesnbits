@@ -7,7 +7,9 @@
 
 <p></p>
 <div class="row">
-  <div class="col-8 card">
+  <div class="col-8 card bg-light">
+    <p></p>
+    <h2 class="">Welcome to Kibbles and Bits!!</h2>
     <p></p>
     <div class="mr-3 card-body card">
       {% if current_user.is_authenticated %}
@@ -15,8 +17,9 @@
       <form method="POST" action="" enctype="multipart/form-data">
 	{{ post_form.csrf_token }}
 	<div class="form-group">
-          {{ post_form.text.label }}
+          <h5>How is your dog today? Tell us here...</h5>
           {{ post_form.text(class="form-control") }}
+          <p></p>
 	  {{ post_form.propic.label(class="form-control-label") }}
           {{ post_form.propic(class="form-control form-control-lg") }}
           {% if post_form.text.errors %}
@@ -33,57 +36,68 @@
       </form>
       {% endif %}
     </div>
-    <div>
+    <div class="container">
       <p></p>
-       <ul class="media-list list-group-flush">
-	 {% for post in posts %}
-	 <li class="media list-group-item">
-	   <img class="mr-3 comment-pic" src="data:image/png;base64,{{post.profpic}}" alt="">
-	   <div class="media-body">
-             <span class="float-right">
-               <small>{{ post.date }}</small>
-             </span>
-               <a href="{{ url_for('dogs.user_detail', username=post.username) }}">
-		 <strong>@{{ post.username }}</strong>
-               </a>
-             <p>
-	       
-               {{ post.content }}
-             </p>
-	     {% if post.image %}
-	     <img class="mr-3" style="height:110px;margin:1%;" src="data:image/png;base64,{{post.image}}" alt="Unable to properly load image.">
-	     {% endif %}
-           </div>
-	 </li>
-	 {% endfor %}
-       </ul>
+      <h5>See what everyone else is talking about!</h5>
+      <ul class="list-group">
+	{% for post in posts %}
+	<li class="list-group-item">
+	  <div class="container">
+	    <div class="card">
+	      <div style="margin:2%;">
+		<img class=" comment-pic" src="data:image/png;base64,{{post.profpic}}" alt="">
+		<a href="{{ url_for('dogs.user_detail', username=post.username) }}">
+		  <strong>@{{ post.username }}</strong>
+		</a>
+		<div class="text-right">
+		  <small>{{ post.date }}</small>
+		</div>
+		<p></p>
+		{{ post.content }}
+		<p></p>
+		
+		{% if post.image %}
+		<div class="card text-center" style="width: 18rem;">
+		  <img class="card-img-bottom h-100" src="data:image/png;base64,{{post.image}}" alt="Unable to properly load image.">
+		</div>
+		{% endif %}
+	      </div>
+	    </div>
+	  </div>
+	</li>
+	{% endfor %}
+      </ul>
     </div>
   </div>
-    <div class="col">
-        <form action="/" class="form-inline my-2 my-lg-0" method="POST" enctype="multipart/form-data">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-info">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            {{ form1.csrf_token }}
-            {{ form1.search_query(class="form-control", placeholder="Search") }}
-
-            {% if form1.search_query.errors %}
-            <div class="alert alert-warning" role="alert">
-                {% for error in form1.search_query.errors %}
-                <span>{{ error }}</span>
-                {% endfor %}
-            </div>
-            {% endif %}
-
-           {{ form1.submit(class="btn btn-outline-success") }} 
-        </form>
-    </div>
+  <div class="col container">
+    <form action="/" class="form-inline my-2 my-lg-0" method="POST" enctype="multipart/form-data">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-info">
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      
+      {{ form1.csrf_token }}
+      <p></p>
+      {{ form1.search_query(class="form-control", placeholder="Search") }}
+      
+      {% if form1.search_query.errors %}
+      <div class="alert alert-warning" role="alert">
+        {% for error in form1.search_query.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+      
+      {{ form1.submit(class="btn btn-outline-success") }}
+      <p></p>
+      <small>Want to find more dog images? Search here by breed!</small>
+    </form>
+    
+  </div>
 </div>
 {% endblock %}

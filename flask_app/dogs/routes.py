@@ -162,9 +162,13 @@ def dog_quiz():
         votes = Vote.objects(date=current_date(), user=user)
         if list(votes) == []:
             voted = False
-    percents = [tp.dog1_vote_count, tp.dog2_vote_count]
     
-    fig = go.Figure(data=[go.Pie(values=percents)])
+    labels = ["Dog 1 Votes", "Dog 2 Votes"]
+    percents = [tp.dog1_vote_count, tp.dog2_vote_count]
+    colors = ["LightSkyBlue", "LightGreen"]
+    fig = go.Figure(data=[go.Pie(values=percents, labels=labels)])
+    fig.update_traces(hoverinfo='label+percent', textinfo='value', textfont_size=20,marker=dict(colors=colors))
+    fig.update_layout(title_text='Today\'s votes')
     f = io.StringIO()
     fig.write_html(f)
 

@@ -21,6 +21,10 @@ from .client import DogClient
 
 db = MongoEngine()
 login_manager = LoginManager()
+@login_manager.user_loader
+def load_user(user_id):
+    return None
+
 bcrypt = Bcrypt()
 dog_client = DogClient()
 
