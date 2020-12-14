@@ -2,7 +2,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from werkzeug.utils import secure_filename
-from wtforms import StringField, IntegerField, SubmitField, TextAreaField, PasswordField
+from wtforms import StringField, IntegerField, SubmitField, TextAreaField, PasswordField, SelectField, RadioField
 from wtforms.validators import (
     InputRequired,
     DataRequired,
@@ -12,7 +12,7 @@ from wtforms.validators import (
     EqualTo,
     ValidationError,
 )
-
+import pyotp
 
 from .models import User
 
@@ -57,6 +57,13 @@ class LoginForm(FlaskForm):
     username = StringField("Username", validators=[InputRequired()])
     password = PasswordField("Password", validators=[InputRequired()])
     submit = SubmitField("Login")
+    token = StringField('Token', validators=[InputRequired(), Length(min=6, max=6)])
+    def validate_token(self, token):
+        user = User.objects(username=self.username.data).first()
+        if user is not None:
+            tok_verified = pyotp.TOTP(user.otp_secret).verify(token.data)
+            if not tok_verified:
+                raise ValidationError("Invalid Token")
 
 
 class UpdateUsernameForm(FlaskForm):
@@ -87,3 +94,7 @@ class MainPageForm(FlaskForm):
         FileAllowed(['jpg', 'png'], 'Images Only!')
     ])
     submit = SubmitField("Post to the Main Page")
+
+class DailyDogPoll(FlaskForm):
+    dog_choice = RadioField("Image Selection",choices=["1","2"])
+    submit = SubmitField("Submit today's choice")

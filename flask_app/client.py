@@ -28,7 +28,22 @@ class DogClient(object):
         url = '{0}{1}'.format(self.base_url, resource)
         res = requests.get(url)
         return res
-
+    def poll_images(self):
+        resp1 = self._get('breeds/image/random')
+        resp2 = self._get('breeds/image/random')
+        if resp1.status_code != 200:
+            raise ValueError(
+                "Search request failed; make sure your API key is correct and authorized"
+            )
+        if resp2.status_code != 200:
+            raise ValueError(
+                "Search request failed; make sure your API key is correct and authorized"
+            )
+        data1 = resp1.json()
+        data2 = resp2.json()
+        if ( data1["status"] == "success" and data2["status"] == "success" ):
+            return data1['message'],data2['message']
+        
     def search(self, search_string):
         """
         Searches the API for the supplied search_string, and returns

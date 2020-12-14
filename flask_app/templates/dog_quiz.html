@@ -4,70 +4,57 @@
 {% if error_msg %}
 <b>{{ error_msg }}</b>
 {% endif %}
-{% if dog %}
+
+{% if poll %}
 
 {# Display card for the dog details #}
 <div class="row">
-  <div class="col-8">
-    <div class="card text-center">
-      <div class="card-header">
-        {{ dog.breed }} {{ dog.subbreed }}
-      </div>
-      <div class="card-body">
-        <img src="{{ dog.imgs[0] }}" class="mr-3" alt="alt text">
-	<p></p>
-	<center>
-	<div class="card-body" style="text-align: middle;display:flex;flex-wrap: wrap;padding: 0 4px;">
-	  <div class="column">
+  <div class="">
+    <div class="">
+      <h2>Welcome to the Daily Dog Quiz!!</h2>
+    </div>
+    <div class="">
+      <p></p>
+      <div class="row">
+	{% if current_user.is_authenticated %}
+	{# Dog Comment submission form #}
+	<form method="POST" action="">
+	  {{ form.csrf_token }}
+	  <div class="">
+	    {% for subfield in form.dog_choice %}
+	    {% if loop.index == 1 %}
+	    <img src="{{ poll.dog1 }}" class="img-fluid img-thumbnail" alt="alt text">
+            {{ subfield }}
+            {{ subfield.label }}
+	    {% endif %}
+	    {% if loop.index == 2 %}
+	    <img src="{{ poll.dog2 }}" class="img-fluid img-thumbnail" alt="alt text">
+	    {{ subfield }}
+	    {{ subfield.label }}
+	    {% endif %}
+	    {% endfor %}
+	    {% if form.dog_choice.errors %}
+	    <div class="alert alert-warning" role="alert">
+              {% for error in form.dog_choice.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+	    </div>
+	    {% endif %}
 	  </div>
+	  <p></p>
+	  {{ form.submit() }}
+	</form>
+	{% else %}
+	<div class="">
+	  <img src="{{ poll.dog1 }}" class="img-fluid img-thumbnail" alt="alt text">
+	  <img src="{{ poll.dog2 }}" class="img-fluid img-thumbnail" alt="alt text">
 	</div>
-	</center>
+	{% endif %}
       </div>
     </div>
   </div>
-{# Comments #}
-  <div class="col">
-    <p></p>
-    <h3> Comments <small class="float-right">{{ reviews|length }} reviews</small></h3>
-    <ul class="media-list">
-      {% for review in reviews %}
-      <li class="media review-item">
-       <img class="mr-3 comment-pic" src="data:image/png;base64,{{review.image}}" alt="">
-        <div class="media-body">
-          <span class="float-right">
-            <small>{{ review.date }}</small>
-          </span>
-          <a href="{{ url_for('dogs.user_detail', username=review.username) }}">
-            <strong>@{{ review.username }}</strong>
-          </a>
-          <p>
-            {{ review.content }}
-          </p>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-{% if current_user.is_authenticated %}
-{# Dog Comment submission form #}
-    <form method="POST" action="">
-      {{ form.csrf_token }}
-      <div class="form-group">
-        {{ form.text.label }}
-        {{ form.text(class="form-control") }}
-
-        {% if form.text.errors %}
-        <div class="alert alert-warning" role="alert">
-          {% for error in form.text.errors %}
-          <span>{{ error }}</span>
-          {% endfor %}
-        </div>
-        {% endif %}
-
-      </div>
-      {{ form.submit() }}
-    </form>
-
 </div>
-{% endif %}
+
+
 {% endif %}
 {% endblock content %}

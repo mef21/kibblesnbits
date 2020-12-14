@@ -2,9 +2,9 @@ from flask import Blueprint, render_template, url_for, redirect, request, flash
 from flask_login import current_user
 
 from .. import dog_client
-from ..forms import MovieReviewForm, SearchForm, MainPageForm
-from ..models import User, Review, Post
-from ..utils import current_time
+from ..forms import MovieReviewForm, SearchForm, MainPageForm, DailyDogPoll
+from ..models import User, Review, Post, Poll, Vote
+from ..utils import current_time, current_date
 import io 
 import base64
 from werkzeug.utils import secure_filename
@@ -40,7 +40,6 @@ def index():
         post.save()
         return redirect(url_for('dogs.index'))
     main_posts = Post.objects.order_by('-date').all()
-    print(main_posts)
     posts = []
     for r in main_posts:
         posts.append({
@@ -107,3 +106,59 @@ def user_detail(username):
     reviews = Review.objects(commenter=user)
 
     return render_template("user_detail.html", username=username, reviews=reviews)
+
+@dogs.route("/dogs/dog_quiz", methods=["GET", "POST"])
+def dog_quiz():
+    form = DailyDogPoll()
+    tp = Poll.objects(date=current_date()).first()
+    
+    if tp == None:
+        try:
+            d1, d2 = dog_client.poll_images()
+        except ValueError as e:
+            flash(str(e))
+            return redirect(request.path)
+    
+        tp = Poll(
+            date=current_date(),
+            dog1=d1,
+            dog2=d2,
+            dog1_vote_count=0,
+            dog2_vote_count=0,
+        )
+        
+        tp.save()
+    
+    
+    if form.validate_on_submit() and current_user.is_authenticated:
+        dv = 0
+        try:
+            dv = int(form.dog_choice.data)
+        except ValueError as e:
+            flash(str(e))
+            return redirect(request.path)
+        
+        vote = Vote(
+            date=current_date(),
+            user=current_user._get_current_object(),
+            v=dv,
+        )
+        vote.save()
+        if dv == 1:
+            temp = tp.dog1_vote_count
+            temp += 1
+            tp.dog1_vote_count = temp
+        if dv == 2:
+            temp = tp.dog2_vote_count
+            temp += 1
+            tp.dog2_vote_count = temp
+        tp.save()
+        return redirect(request.path)
+
+    #voted = (Vote.objects(date=current_date, user=current_user) == [])
+    voted = False
+    
+    
+    return render_template(
+        "dog_quiz.html", form=form, poll=tp, voted=voted
+    )
