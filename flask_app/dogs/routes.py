@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for, redirect, request, flash
 from flask_login import current_user
-
+import plotly.graph_objects as go
 from .. import dog_client
 from ..forms import MovieReviewForm, SearchForm, MainPageForm, DailyDogPoll
 from ..models import User, Review, Post, Poll, Vote
@@ -156,9 +156,18 @@ def dog_quiz():
         return redirect(request.path)
 
     #voted = (Vote.objects(date=current_date, user=current_user) == [])
-    voted = False
+    voted = True
+    if current_user.is_authenticated:
+        user = User.objects(username=current_user.username).first()
+        votes = Vote.objects(date=current_date(), user=user)
+        if list(votes) == []:
+            voted = False
+    percents = [tp.dog1_vote_count, tp.dog2_vote_count]
     
-    
+    fig = go.Figure(data=[go.Pie(values=percents)])
+    f = io.StringIO()
+    fig.write_html(f)
+
     return render_template(
-        "dog_quiz.html", form=form, poll=tp, voted=voted
+        "dog_quiz.html", form=form, poll=tp, voted=voted, plot=f.getvalue()
     )
