@@ -107,6 +107,7 @@ def user_detail(username):
 
     return render_template("user_detail.html", username=username, reviews=reviews)
 
+#@talisman(frame_options=ALLOW_FROM, frame_options_allow_from='*',content_security_policy={**csp, 'frame-ancestors': ['*']})
 @dogs.route("/dogs/dog_quiz", methods=["GET", "POST"])
 def dog_quiz():
     form = DailyDogPoll()
@@ -175,3 +176,8 @@ def dog_quiz():
     return render_template(
         "dog_quiz.html", form=form, poll=tp, voted=voted, plot=f.getvalue()
     )
+
+@dogs.route("/about", methods=["GET"])
+def about():
+    return render_template("about.html")
+

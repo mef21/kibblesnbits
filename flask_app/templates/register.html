@@ -7,7 +7,8 @@
 </div>
 <div class="row">
     <div class="col">
-        If you already have an account, then just <a href="{{ url_for('users.login') }}">Log In!</a>
+      If you already have an account, then just <a href="{{ url_for('users.login') }}">Log In!</a>
+      <p></p>
     </div>
 </div>
 <!-- Registration Form: -->
@@ -62,6 +63,8 @@
             <div class="form-group">
                 {{ form.submit(class="form-control form-control-lg") }}
             </div>
+	    <p></p>
+	    <small>NOTE - Password Requirements: At least 8 characters, 1 special character, 1 number, 1 uppercase letter, and 1 lowercase letter.</small>
         </form>
     </div>
 </div>

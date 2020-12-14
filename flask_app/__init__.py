@@ -10,7 +10,7 @@ from flask_login import (
 )
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
-
+from flask_talisman import Talisman
 # stdlib
 from datetime import datetime
 import os
@@ -50,7 +50,14 @@ def create_app(test_config=None):
     app.register_blueprint(users)
     app.register_blueprint(dogs)
     app.register_error_handler(404, page_not_found)
-
+    inline = '\'unsafe-inline\''
     login_manager.login_view = "users.login"
-
+    csp = {
+        'default-src': ['\'self\'', 'https://dog.ceo/api'],
+        'img-src': ['*','\'self\'', 'data:'],
+        'style-src': ['https://stackpath.bootstrapcdn.com/bootstrap/','\'self\'','*.plot.ly/','https://js.stripe.com', inline],
+        'script-src': [inline,'\'unsafe-eval\'','https://stackpath.bootstrapcdn.com/bootstrap/', 'https://code.jquery.com/', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/', 'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js','\'self\'','https://cdn.plot.ly/plotly-latest.min.js','*.plot.ly', 'https://cdn.plot.ly', 'https://js.stripe.com'],
+        'media-src': ['https://dog.ceo/api','https://plot.ly/','https://cdn.plot.ly/plotly-gl2d-latest.min.js'],
+    }
+    Talisman(app, content_security_policy=csp)
     return app

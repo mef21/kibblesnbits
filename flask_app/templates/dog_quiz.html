@@ -24,12 +24,12 @@
 	  <div class="">
 	    {% for subfield in form.dog_choice %}
 	    {% if loop.index == 1 %}
-	    <img src="{{ poll.dog1 }}" class="img-fluid img-thumbnail" style="height:200px;margin:1%;" alt="alt text">
+	    <img src="{{ poll.dog1 }}" class="img-thumbnail w-25" alt="alt text">
             {{ subfield }}
             {{ subfield.label }}
 	    {% endif %}
 	    {% if loop.index == 2 %}
-	    <img src="{{ poll.dog2 }}" class="img-fluid img-thumbnail" style="height:200px;margin:1%;" alt="alt text">
+	    <img src="{{ poll.dog2 }}" class="img-thumbnail w-25" alt="alt text">
 	    {{ subfield }}
 	    {{ subfield.label }}
 	    {% endif %}
@@ -47,8 +47,8 @@
 	</form>
 	{% else %}
 	<div class="">
-	  <img src="{{ poll.dog1 }}" class="mr-3" style="height:110px;margin:1%;" alt="alt text">
-	  <img src="{{ poll.dog2 }}" class="mr-3" style="height:110px;margin:1%;" alt="alt text">
+	  <img src="{{ poll.dog1 }}" class="mr-3 w-25" alt="alt text">
+	  <img src="{{ poll.dog2 }}" class="mr-3 w-25" alt="alt text">
 	</div>
 	{% endif %}
       </div>

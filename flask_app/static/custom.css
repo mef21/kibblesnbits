@@ -31,6 +31,17 @@ movie {
     word-wrap: break-word;
 }
 
-.photosize img.pic-resize{
+.photosize {
     height : 110px;
+}
+
+.img-max {
+  max-height: 110px;
+}
+
+.dog-detail {
+    text-align: middle;
+    display:flex;
+    flex-wrap: wrap;
+    padding:0 4px;
 }

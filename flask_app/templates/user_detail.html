@@ -5,12 +5,12 @@
         <img class="propic" src="data:image/png;base64,{{image}}" alt="image">
     </div>
     <div class="col">
-        <h2>{{ username }}'s Reviews</h2>
+        <h2>{{ username }}'s Comments and Posts</h2>
     </div>
 </div>
 <div class="row">
     <div class="col">
-        <h1> Reviews <small class="float-right">{{ reviews.count() }} reviews</small></h1>
+        <h1> Comments <small class="float-right">{{ reviews.count() }} comments</small></h1>
         <ul class="media-list">
             {% for review in reviews %}
             <li class="media review-item">

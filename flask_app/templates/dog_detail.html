@@ -17,12 +17,12 @@
         <img src="{{ dog.imgs[0] }}" class="mr-3" alt="alt text">
 	<p></p>
 	<center>
-	<div class="card-body" style="text-align: middle;display:flex;flex-wrap: wrap;padding: 0 4px;">
+	<div class="card-body dog-detail">
 	  <div class="column">
 	    <h6 class="list-group-item"><b>Photos</b> {{ dog.sblist }}</h6>
 	    {% for result in dog.imgs %}
 	    
-	    <img src="{{ result }}" class="mr-3" style="height:110px;margin:1%;">
+	    <img src="{{ result }}" class="w-25 ">
 	    {% endfor %}
 	    
 	  </div>
@@ -34,7 +34,7 @@
 {# Comments #}
   <div class="col">
     <p></p>
-    <h3> Comments <small class="float-right">{{ reviews|length }} reviews</small></h3>
+    <h3> Comments <small class="float-right">{{ reviews|length }} comments</small></h3>
     <ul class="media-list">
       {% for review in reviews %}
       <li class="media review-item">

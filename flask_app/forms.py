@@ -51,7 +51,26 @@ class RegistrationForm(FlaskForm):
         user = User.objects(email=email.data).first()
         if user is not None:
             raise ValidationError("Email is taken")
-
+    def validate_password(self, password):
+        boo1 = (len(password.data) >= 8)
+        hasnum = False
+        hassym = False
+        hasupp = False
+        haslower = False
+        spchar = "!@#$%^&*()-+?_=<>"
+        for c in password.data:
+            if c.isdigit():
+                hasnum = True
+            elif c in spchar:
+                hassym = True
+            elif c.islower():
+                haslower = True
+            elif c.isupper():
+                hasupp = True
+        if(boo1 and hasnum and hassym and hasupp and haslower):
+            "cool"
+        else:
+            raise ValidationError("Password does not fit requirements!")
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[InputRequired()])
