@@ -56,7 +56,7 @@ def create_app(test_config=None):
         'default-src': ['\'self\'', 'https://dog.ceo/api'],
         'img-src': ['*','\'self\'', 'data:'],
         'style-src': ['https://stackpath.bootstrapcdn.com/bootstrap/','\'self\'','*.plot.ly/','https://js.stripe.com', inline],
-        'script-src': [inline,'\'unsafe-eval\'','https://stackpath.bootstrapcdn.com/bootstrap/', 'https://code.jquery.com/', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/', 'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js','\'self\'','https://cdn.plot.ly/plotly-latest.min.js','*.plot.ly', 'https://cdn.plot.ly', 'https://js.stripe.com'],
+        'script-src': [inline,'\'unsafe-eval\'','https://stackpath.bootstrapcdn.com/bootstrap/', 'https://code.jquery.com/', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/', 'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js','\'self\'','https://cdn.plot.ly/plotly-latest.min.js','*.plot.ly', 'https://cdn.plot.ly', 'https://js.stripe.com','https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js.map'],
         'media-src': ['https://dog.ceo/api','https://plot.ly/','https://cdn.plot.ly/plotly-gl2d-latest.min.js'],
     }
     Talisman(app, content_security_policy=csp)
