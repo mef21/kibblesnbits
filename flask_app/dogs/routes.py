@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, url_for, redirect, request, flash
 from flask_login import current_user
 import plotly.graph_objects as go
 from .. import dog_client
-from ..forms import MovieReviewForm, SearchForm, MainPageForm, DailyDogPoll
+from ..forms import DogReviewForm, SearchForm, MainPageForm, DailyDogPoll
 from ..models import User, Review, Post, Poll, Vote
 from ..utils import current_time, current_date
 import io 
@@ -71,7 +71,7 @@ def dog_detail(dog_id):
         flash(str(e))
         return redirect(url_for("users.login"))
 
-    form = MovieReviewForm()
+    form = DogReviewForm()
     if form.validate_on_submit() and current_user.is_authenticated:
         review = Review(
             commenter=current_user._get_current_object(),
